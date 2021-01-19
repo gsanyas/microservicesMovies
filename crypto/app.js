@@ -46,7 +46,7 @@ const readToken = (token) => {
 };
 
 app.get("/encryptUser", (req, res) => {
-    const user = req.body.user;
+    const user = req.params.user;
     if (user) {
         const token = createToken(user);
         res.status(200).send(token);
@@ -55,7 +55,7 @@ app.get("/encryptUser", (req, res) => {
     }
 });
 app.get("/decryptUser", (req, res) => {
-    const token = req.body.token;
+    const token = req.params.token;
     if (token) {
         try {
             const user = readToken(token);
