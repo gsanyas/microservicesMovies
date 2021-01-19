@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const fs = require('fs');
 
 
-const readFile = () => {
+const readFile = async () => {
     try {
         const secret = fs.readFileSync("sym_keyfile.key", "utf8");
         return secret;
@@ -13,9 +13,9 @@ const readFile = () => {
     }
 };
 
-exports.createToken = (user) => {
+exports.createToken = async (user) => {
     try {
-        const secret = readFile();
+        const secret = await readFile();
         const token = jwt.sign(user, secret, { algorithm: "HS256" });
         return token;
     } catch (_err) {
@@ -23,14 +23,13 @@ exports.createToken = (user) => {
     }
 };
 
-exports.readToken = (token) => {
+exports.readToken = async (token) => {
     try {
-        const secret = readFile();
-        jwt.verify(token, secret, (err, data) => {
+        const secret = await readFile();
+        return jwt.verify(token, secret, (err, data) => {
             if (err) {
                 throw new Error("Invalid token.");
             } else if (data) {
-                console.log(JSON.stringify(data))
                 return data;
             }
         });
