@@ -8,15 +8,16 @@ const user = {
 
 describe("Test createToken", () => {
     test("It should not raise an error", async () => {
-        const token = createToken(user);
-        expect(token).not.toBeNull();
+        await createToken(user);
+        expect(createToken).toHaveBeenCalled;
     });
 });
 
 describe("Test readToken", () => {
-    test("It should not raise an error", async () => {
-        const token = createToken(user);
-        const result = readToken(token);
-        expect(result).toBe(user);
+    test("It should be equal", async () => {
+        const token = await createToken(user);
+        const userResult = await readToken(token);
+        console.log(JSON.stringify(userResult))
+        expect(userResult).toEqual(user);
     });
 });
