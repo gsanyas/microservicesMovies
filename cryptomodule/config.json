@@ -1,0 +1,4 @@
+{
+    "port": 8070,
+    "origin": "http://localhost:5500"
+}
