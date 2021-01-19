@@ -11,10 +11,15 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.get("/encryptUser", (req, res) => {
-    const user = req.params.user;
-    if (user) {
-        const token = createToken(user);
-        res.status(200).send(token);
+    const userString = req.params.user;
+    if (userString) {
+        try {
+            const user = JSON.parse(userString);
+            const token = createToken(user);
+            res.status(200).send(token);
+        } catch (_err) {
+            res.sendStatus(404);
+        }
     } else {
         res.sendStatus(404);
     }
