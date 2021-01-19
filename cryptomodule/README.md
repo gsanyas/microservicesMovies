@@ -9,3 +9,9 @@
 ## Start
 
 `npm start`
+
+## Endpoints
+
+- encryptUser : GET(params: {user: Text} , out: {secret: Text})
+
+- decryptUser : GET(params: {secret: Text} ,out: {user: Text})
