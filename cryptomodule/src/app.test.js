@@ -9,19 +9,17 @@ const user = {
 
 describe("Test the encryption path", () => {
     test("It should response the GET method", async () => {
-        const response = await request(app)
-            .get("/encryptUser")
-            .query({ user: JSON.stringify(user) });
+        const response = await request(app).get(
+            "/encryptUser/" + JSON.stringify(user)
+        );
         expect(response.statusCode).toBe(200);
     });
 });
 
 describe("Test the decryption path", () => {
     test("It should response the GET method", async () => {
-        const token = createToken(user);
-        const response = await request(app)
-            .get("/decryptUser")
-            .query({ token: token });
+        const token = await createToken(user);
+        const response = await request(app).get("/decryptUser/" + token);
         expect(response.statusCode).toBe(200);
     });
 });
