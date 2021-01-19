@@ -17,7 +17,7 @@ describe("Test readToken", () => {
     test("It should be equal", async () => {
         const token = await createToken(user);
         const userResult = await readToken(token);
-        console.log(JSON.stringify(userResult))
-        expect(userResult).toEqual(user);
+        expect(userResult['id']).toEqual(50);
+        expect(userResult['rights']).toEqual(3);
     });
 });
