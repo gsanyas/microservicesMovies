@@ -12,5 +12,5 @@ app.listen(config.port, () => {
     console.log('Server started !');
 });
 
-app.get('/encryptUser',(_req,res) => res.sendStatus(200))
-app.get('/decryptUser',(_req,res) => res.sendStatus(200))
+app.get('/encryptUser', (_req, res) => res.sendStatus(200))
+app.get('/decryptUser', (_req, res) => res.sendStatus(200))
