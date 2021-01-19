@@ -26,6 +26,7 @@ exports.readToken = (token) => {
             if (err) {
                 throw new Error("Invalid token.");
             } else if (data) {
+                console.log(JSON.stringify(data))
                 return data;
             }
         });
