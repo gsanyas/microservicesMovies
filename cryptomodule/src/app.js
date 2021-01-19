@@ -9,7 +9,7 @@ app.use(cors({ credentials: true, origin: config.origin }));
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/encryptUser", (req, res) => {
+app.get("/encryptUser/:user", (req, res) => {
     const userString = req.params.user;
     if (userString) {
         try {
@@ -20,10 +20,11 @@ app.get("/encryptUser", (req, res) => {
             res.sendStatus(404);
         }
     } else {
+        console.log('here')
         res.sendStatus(404);
     }
 });
-app.get("/decryptUser", (req, res) => {
+app.get("/decryptUser/:token", (req, res) => {
     const token = req.params.token;
     if (token) {
         try {
