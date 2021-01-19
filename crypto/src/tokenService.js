@@ -1,6 +1,6 @@
 const readFile = () => {
     try {
-        const secret = fs.readFileSync("./sym_keyfile.key", "utf8");
+        const secret = fs.readFileSync("../sym_keyfile.key", "utf8");
         return secret;
     } catch (_err) {
         console.error(
