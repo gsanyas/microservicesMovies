@@ -9,10 +9,6 @@ app.use(cors({ credentials: true, origin: config.origin }));
 app.use(cookieParser());
 app.use(express.json());
 
-app.listen(config.port, () => {
-    console.log("Server started !");
-});
-
 const readFile = () => {
     try {
         const secret = fs.readFileSync("./sym_keyfile.key", "utf8");
@@ -71,3 +67,5 @@ app.get("/decryptUser", (req, res) => {
         res.sendStatus(401);
     }
 });
+
+module.exports = app;
