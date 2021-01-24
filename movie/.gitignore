@@ -1,1 +1,3 @@
-data/movies.json
+data/
+node_modules/
+dist/
