@@ -40,11 +40,14 @@ const findMovie = findByTitle
 
 const toMovieAttributes = convertMovieAttributes
 
+const getMovie = findById
+
 export {
     addMovie,
     archiveMovie,
     addMovies,
     archiveMovies,
     findMovie,
+    getMovie,
     toMovieAttributes,
 }
