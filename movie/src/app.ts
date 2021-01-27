@@ -1,20 +1,49 @@
-import { addMovies } from "./movieService"
+import { addMovie, archiveMovie, findMovie, toMovieAttributes } from "./service"
 import { checkRights } from "./filter"
 import cors from "cors"
 import config from "../config.json"
 import express from "express"
+import { isArrayOfNumbers } from "./utils"
+import { Movie, MovieAttributes } from "./model"
 
 const app = express()
-app.use(cors({ origin: config.origin }))
+app.use(cors())
+// app.use(cors({ origin: config.origin }))
 app.use(express.json())
 
-app.post("/add", checkRights, (req, res) => {
-    if (req.body.movies) {
-        const data = addMovies(req.body.movies)
-        res.status(200).json(data)
+app.post("/add", checkRights, async (req, res) => {
+    if (req.body && req.body.movie) {
+        const movie: MovieAttributes = toMovieAttributes(req.body.movie)
+        if (movie) {
+            const data: Movie = addMovie(movie)
+            res.status(201).json(data)
+        } else {
+            res.sendStatus(415)
+        }
+    } else {
+        res.sendStatus(404)
     }
 })
 
-app.get("/", (_req, res) => res.status(200).json({ valid: true }))
+app.get("/find/:title", checkRights, async (req, res) => {
+    const movie: Movie = findMovie(req.params.title)
+    if (movie) {
+        res.status(200).json(movie)
+    } else {
+        res.sendStatus(404)
+    }
+})
+
+app.post("/archive", checkRights, async (req, res) => {
+    if (req.body.movies) {
+        if (isArrayOfNumbers(req.body.movies)) {
+            await archiveMovie(req.body.movies)
+        } else {
+            res.sendStatus(415)
+        }
+    } else {
+        res.sendStatus(404)
+    }
+})
 
 export { app }

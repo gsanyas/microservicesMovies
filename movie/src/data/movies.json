@@ -1,0 +1,11 @@
+{
+    "movieList": [
+        {
+            "id": 0,
+            "title": "Shining",
+            "director": "Kubrick",
+            "genre": "horror"
+        }
+    ],
+    "current_id": 1
+}
