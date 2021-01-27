@@ -37,7 +37,12 @@ app.get("/find/:title", checkRights, async (req, res) => {
 app.post("/archive", checkRights, async (req, res) => {
     if (req.body.movies) {
         if (isArrayOfNumbers(req.body.movies)) {
-            await archiveMovie(req.body.movies)
+            const result: boolean = await archiveMovie(req.body.movies)
+            if (result) {
+                res.sendStatus(204)
+            } else {
+                res.sendStatus(304)
+            }
         } else {
             res.sendStatus(415)
         }

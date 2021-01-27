@@ -4,9 +4,10 @@ import {
     Movie,
     convertMovieAttributes,
     MovieAttributes,
+    findById,
+    deleteMovie,
 } from "./model"
 import { isArrayOfStrings } from "./utils"
-import { plainToClass } from "class-transformer"
 
 const addMovie = createMovie
 
@@ -19,8 +20,14 @@ const addMovies = async (movies: MovieAttributes[]): Promise<Movie[]> => {
     return moviesCreated
 }
 
-const archiveMovie = (movieId: number): void => {
-    console.log("to implement")
+const archiveMovie = (movieId: number): boolean => {
+    const movie: Movie = findById(movieId)
+    if (movie) {
+        deleteMovie(movie)
+        return true
+    } else {
+        return false
+    }
 }
 
 const archiveMovies = async (moviesId: number[]): Promise<void> => {

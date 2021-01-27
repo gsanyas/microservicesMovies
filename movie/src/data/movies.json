@@ -1,4 +1,5 @@
 {
+    "current_id": 2,
     "movieList": [
         {
             "id": 0,
@@ -7,5 +8,12 @@
             "genre": "horror"
         }
     ],
-    "current_id": 1
+    "archive": [
+        {
+            "id": 0,
+            "title": "example",
+            "director": "nobody",
+            "genre": "example"
+        }
+    ]
 }
