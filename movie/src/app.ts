@@ -55,7 +55,7 @@ app.post("/archive", checkRights, async (req, res) => {
 app.get("/get_movie/:id", checkRights, (req, res) => {
     let id: number
     try {
-        id = parseInt(req.params.id)
+        id = parseInt(req.params.id,10)
     } catch (error) {
         res.sendStatus(415)
     }
