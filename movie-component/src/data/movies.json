@@ -1,0 +1,19 @@
+{
+    "current_id": 2,
+    "movieList": [
+        {
+            "id": 0,
+            "title": "Shining",
+            "director": "Kubrick",
+            "genre": "horror"
+        }
+    ],
+    "archive": [
+        {
+            "id": 0,
+            "title": "example",
+            "director": "nobody",
+            "genre": "example"
+        }
+    ]
+}
