@@ -78,7 +78,7 @@ function findById(id: number): Movie {
 }
 
 function deleteMovie(movie: Movie): void {
-    if (! movies.movieList.find((m: Movie) => equalMovie(m, movie))) {
+    if (!movies.movieList.find((m: Movie) => equalMovie(m, movie))) {
         return
     }
     movies.movieList = movies.movieList.filter((m: Movie) => m.id !== movie.id)
