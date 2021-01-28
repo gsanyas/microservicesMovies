@@ -9,3 +9,7 @@ Composant qui implémente les fonctionnalités CRUD des movies
 ## Run
 
 `npm run start`
+
+## Test using jest
+
+`npm run test`
