@@ -16,7 +16,7 @@ app.use(cors())
 // app.use(cors({ origin: config.origin }))
 app.use(express.json())
 
-app.post("/add", checkRights, async (req, res) => {
+app.post("/add", checkRights, (req, res) => {
     if (req.body && req.body.movie) {
         const movie: MovieAttributes = toMovieAttributes(req.body.movie)
         if (movie) {
@@ -39,7 +39,7 @@ app.get("/find/:title", checkRights, (req, res) => {
     }
 })
 
-app.post("/archive/:id", checkRights, async (req, res) => {
+app.post("/archive/:id", checkRights, (req, res) => {
     const getId = (): number => {
         try {
             return parseInt(req.params.id)
@@ -57,17 +57,23 @@ app.post("/archive/:id", checkRights, async (req, res) => {
 })
 
 app.get("/get_movie/:id", checkRights, (req, res) => {
-    let id: number
-    try {
-        id = parseInt(req.params.id, 10)
-    } catch (error) {
-        res.sendStatus(415)
+    const getId = (): number => {
+        try {
+            return parseInt(req.params.id)
+        } catch (error) {
+            return undefined
+        }
     }
-    const movie: Movie = findById(id)
-    if (movie) {
-        res.status(200).json(movie)
+    const id = getId()
+    if (id) {
+        const movie: Movie = findById(id)
+        if (movie) {
+            res.status(200).json(movie)
+        } else {
+            res.sendStatus(404)
+        }
     } else {
-        res.sendStatus(404)
+        res.sendStatus(415)
     }
 })
 
