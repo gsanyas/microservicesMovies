@@ -1,11 +1,15 @@
-import {
-    archiveMovies,
-} from "./service"
 import { checkRights } from "./filter"
 import cors from "cors"
 import express from "express"
-import { isArrayOfNumbers } from "./utils"
-import { createMovie, findById, findByTitle, Movie, MovieAttributes, toMovieAttributes } from "./model"
+import {
+    createMovie,
+    deleteMovie,
+    findById,
+    findByTitle,
+    Movie,
+    MovieAttributes,
+    toMovieAttributes,
+} from "./model"
 
 const app = express()
 app.use(cors())
@@ -35,23 +39,27 @@ app.get("/find/:title", checkRights, (req, res) => {
     }
 })
 
-app.post("/archive", checkRights, async (req, res) => {
-    if (req.body.movies) {
-        if (isArrayOfNumbers(req.body.movies)) {
-            await archiveMovies(req.body.movies)
-            res.sendStatus(204)
-        } else {
-            res.sendStatus(415)
+app.post("/archive/:id", checkRights, async (req, res) => {
+    const getId = (): number => {
+        try {
+            return parseInt(req.params.id)
+        } catch (error) {
+            return undefined
         }
+    }
+    const id = getId()
+    if (id) {
+        const hasChanged: boolean = deleteMovie(id)
+        res.sendStatus(hasChanged ? 204 : 301)
     } else {
-        res.sendStatus(404)
+        res.sendStatus(415)
     }
 })
 
 app.get("/get_movie/:id", checkRights, (req, res) => {
     let id: number
     try {
-        id = parseInt(req.params.id,10)
+        id = parseInt(req.params.id, 10)
     } catch (error) {
         res.sendStatus(415)
     }

@@ -1,4 +1,3 @@
-import * as request from "supertest"
 import {
     toMovieAttributes,
     createMovie,
@@ -12,11 +11,11 @@ import {
     MovieAttributes,
 } from "./model"
 import movies from "./data/movies.json"
-import { copyArray } from "./utils"
+import { copyObject } from "./utils"
 
-const defaultMovieList: Movie[] = copyArray(movies.movieList)
+const defaultMovieList: Movie[] = copyObject(movies.movieList)
 const defaultId: number = movies.current_id
-const defaultArchive: Movie[] = copyArray(movies.archive)
+const defaultArchive: Movie[] = copyObject(movies.archive)
 
 let movieAttributes: MovieAttributes = {
     title: "TestTitle",
@@ -60,9 +59,9 @@ let movieFake5: Movie = {
 }
 
 const resetData = () => {
-    movies.movieList = copyArray(defaultMovieList)
+    movies.movieList = copyObject(defaultMovieList)
     movies.current_id = defaultId
-    movies.archive = copyArray(defaultArchive)
+    movies.archive = copyObject(defaultArchive)
 }
 
 const resetMovieAttributes = () => {
