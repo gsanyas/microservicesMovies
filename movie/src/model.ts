@@ -42,8 +42,16 @@ function equalAttributes(m1: MovieAttributes, m2: MovieAttributes): boolean {
     )
 }
 
+function equalMovie(m1: Movie, m2: Movie): boolean {
+    return (
+        equalAttributes(m1, m2) && isMovie(m1) && isMovie(m2) && m1.id === m2.id
+    )
+}
+
 function createMovie(movieAttributes: MovieAttributes): Movie {
-    if (movies.movieList.some((m: Movie) => equalAttributes(movieAttributes, m))) {
+    if (
+        movies.movieList.some((m: Movie) => equalAttributes(movieAttributes, m))
+    ) {
         return undefined
     }
     const movie: Movie = movieAttributes as Movie
@@ -70,6 +78,9 @@ function findById(id: number): Movie {
 }
 
 function deleteMovie(movie: Movie): void {
+    if (! movies.movieList.find((m: Movie) => equalMovie(m, movie))) {
+        return
+    }
     movies.movieList = movies.movieList.filter((m: Movie) => m.id !== movie.id)
     movies.movieList = movies.movieList
     movies.archive.push(movie)
@@ -82,6 +93,7 @@ export {
     convertMovieAttributes,
     createMovie,
     deleteMovie,
+    equalMovie,
     findById,
     findByTitle,
 }
