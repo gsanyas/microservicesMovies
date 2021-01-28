@@ -24,7 +24,6 @@ function hasMovieAttributes(object: object): boolean {
 }
 
 function isMovie(object: object): boolean {
-    console.log(JSON.stringify(object))
     if (hasMovieAttributes(object) && "id" in object) {
         const movie = object as Movie
         return typeof movie.id === "number"
