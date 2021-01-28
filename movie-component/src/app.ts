@@ -1,15 +1,11 @@
 import {
-    addMovie,
     archiveMovies,
-    findMovie,
-    getMovie,
-    toMovieAttributes,
 } from "./service"
 import { checkRights } from "./filter"
 import cors from "cors"
 import express from "express"
 import { isArrayOfNumbers } from "./utils"
-import { Movie, MovieAttributes } from "./model"
+import { createMovie, findById, findByTitle, Movie, MovieAttributes, toMovieAttributes } from "./model"
 
 const app = express()
 app.use(cors())
@@ -20,7 +16,7 @@ app.post("/add", checkRights, async (req, res) => {
     if (req.body && req.body.movie) {
         const movie: MovieAttributes = toMovieAttributes(req.body.movie)
         if (movie) {
-            const data: Movie = addMovie(movie)
+            const data: Movie = createMovie(movie)
             res.status(201).json(data)
         } else {
             res.sendStatus(415)
@@ -31,7 +27,7 @@ app.post("/add", checkRights, async (req, res) => {
 })
 
 app.get("/find/:title", checkRights, (req, res) => {
-    const movie: Movie = findMovie(req.params.title)
+    const movie: Movie = findByTitle(req.params.title)
     if (movie) {
         res.status(200).json(movie)
     } else {
@@ -59,7 +55,7 @@ app.get("/get_movie/:id", checkRights, (req, res) => {
     } catch (error) {
         res.sendStatus(415)
     }
-    const movie: Movie = getMovie(id)
+    const movie: Movie = findById(id)
     if (movie) {
         res.status(200).json(movie)
     } else {

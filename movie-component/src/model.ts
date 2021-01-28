@@ -24,6 +24,7 @@ function hasMovieAttributes(object: object): boolean {
 }
 
 function isMovie(object: object): boolean {
+    console.log(JSON.stringify(object))
     if (hasMovieAttributes(object) && "id" in object) {
         const movie = object as Movie
         return typeof movie.id === "number"
@@ -65,7 +66,7 @@ function findByTitle(title: string): Movie {
     return movies.movieList.find((m: Movie) => m.title === title)
 }
 
-function convertMovieAttributes(movie: object): MovieAttributes {
+function toMovieAttributes(movie: object): MovieAttributes {
     if (hasMovieAttributes(movie)) {
         return movie as MovieAttributes
     } else {
@@ -77,23 +78,29 @@ function findById(id: number): Movie {
     return movies.movieList.find((m: Movie) => m.id === id)
 }
 
-function deleteMovie(movie: Movie): void {
-    if (!movies.movieList.find((m: Movie) => equalMovie(m, movie))) {
-        return
+function deleteMovie(movieId: number): boolean {
+    const movie: Movie = findById(movieId)
+    if (movie) {
+        movies.movieList = movies.movieList.filter(
+            (m: Movie) => m.id !== movie.id
+        )
+        movies.movieList = movies.movieList
+        movies.archive.push(movie)
+        return true
+    } else {
+        return false
     }
-    movies.movieList = movies.movieList.filter((m: Movie) => m.id !== movie.id)
-    movies.movieList = movies.movieList
-    movies.archive.push(movie)
 }
 
 export {
     Movie,
     MovieAttributes,
     isMovie,
-    convertMovieAttributes,
+    toMovieAttributes,
     createMovie,
     deleteMovie,
     equalMovie,
     findById,
     findByTitle,
+    hasMovieAttributes,
 }
