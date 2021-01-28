@@ -1,7 +1,5 @@
 import movies from "./data/movies.json"
 
-let movieList: Movie[] = movies.movieList
-
 interface MovieAttributes {
     title: string
     director: string
@@ -45,18 +43,18 @@ function equalAttributes(m1: MovieAttributes, m2: MovieAttributes): boolean {
 }
 
 function createMovie(movieAttributes: MovieAttributes): Movie {
-    if (movieList.some((m: Movie) => equalAttributes(movieAttributes, m))) {
+    if (movies.movieList.some((m: Movie) => equalAttributes(movieAttributes, m))) {
         return undefined
     }
     const movie: Movie = movieAttributes as Movie
     movie.id = movies.current_id
     movies.current_id = movie.id + 1
-    movieList.push(movie)
+    movies.movieList.push(movie)
     return movie
 }
 
 function findByTitle(title: string): Movie {
-    return movieList.find((m: Movie) => m.title === title)
+    return movies.movieList.find((m: Movie) => m.title === title)
 }
 
 function convertMovieAttributes(movie: object): MovieAttributes {
@@ -68,12 +66,12 @@ function convertMovieAttributes(movie: object): MovieAttributes {
 }
 
 function findById(id: number): Movie {
-    return movieList.find((m: Movie) => m.id === id)
+    return movies.movieList.find((m: Movie) => m.id === id)
 }
 
 function deleteMovie(movie: Movie): void {
-    movies.movieList = movieList.filter((m: Movie) => m.id !== movie.id)
-    movieList = movies.movieList
+    movies.movieList = movies.movieList.filter((m: Movie) => m.id !== movie.id)
+    movies.movieList = movies.movieList
     movies.archive.push(movie)
 }
 
