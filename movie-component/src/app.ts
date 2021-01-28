@@ -50,7 +50,7 @@ app.post("/archive/:id", checkRights, async (req, res) => {
     const id = getId()
     if (id) {
         const hasChanged: boolean = deleteMovie(id)
-        res.sendStatus(hasChanged ? 204 : 404)
+        res.sendStatus(hasChanged ? 204 : 304)
     } else {
         res.sendStatus(415)
     }
