@@ -10,3 +10,5 @@ Il faut alors ouvrir un terminal dans chacun des dossiers contenant les dockerfi
 Puis taper
 
 `docker run <nom_conteneur>`
+
+Nous n'avons pas réussi à faire communiquer les microservices entre eux.
