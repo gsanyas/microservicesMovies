@@ -26,3 +26,63 @@ Puis taper
 `docker run <nom_conteneur>`
 
 Nous n'avons pas réussi à faire communiquer les microservices entre eux.
+
+## Documentation
+
+Toutes les requêtes doivent s'effectuer sur l'interface mainInterface.
+
+Ressources :
+
+### User
+
+Format des données utilisateurs : {id: number,address: string,password: string,rights: string}: User
+
+rights peut prendre les valeurs suivantes :
+- "1": autorisations client
+- "2": autorisations service admin
+- "3": autorisations catalogue admin
+
+Endpoints:
+
+requêtes de la forme `$interfaceURI + /user + $endpoint` (ex: `http://localhost:8000/user/login`)
+
+- login
+  - POST `/login`
+  - body: {address: string,password: string} (all fields are mandatory)
+  - response: status: 200, body: string (authentication token)
+- add
+  - POST `/add`
+  - body: {user: {address: string,password: string,rights: string}} (all fields are mandatory)
+  - headers: {token: string}
+  - authorization needed: rights=2
+  - response: status: 201, body: User
+- archive
+  - POST `/archive/:id`
+  - body: {}
+  - headers: {token: string}
+  - authorization needed: rights=2
+  - response: status: 204
+
+### Movie
+
+Format des données des films : {id: number,title: string,director: string,genre: string}: Movie
+
+Endpoints:
+
+requêtes de la forme `$interfaceURI + /movie + $endpoint` (ex: `http://localhost:8000/movie/find/:title`)
+
+- login
+  - GET `/find/:title`
+  - response: status: 200, body: Movie
+- add
+  - POST `/add`
+  - body: {user: {title: string,director: string,genre: string}} (all fields are mandatory)
+  - headers: {token: string}
+  - authorization needed: rights=3
+  - response: status: 201, body: Movie
+- archive
+  - POST `/archive/:id`
+  - body: {}
+  - headers: {token: string}
+  - authorization needed: rights=3
+  - response: status: 204
