@@ -17,14 +17,11 @@ const cookieConfig = {
 }
 
 // LOGIN : it's a special request
-app.get("/user/login/:address/:password", async (req, res) => {
-    const URI =
-        process.env.USER_COMPONENT_URI +
-        "/login/" +
-        req.params.address +
-        "/" +
-        req.params.password
-    const userResponse = await axios.get(URI)
+app.get("/user/login", async (req, res) => {
+    const URI = process.env.USER_COMPONENT_URI + "/login"
+    const userResponse = await axios.post(URI, req.body, {
+        headers: { accept: "application/json" },
+    })
     if (userResponse.status !== 200) {
         res.sendStatus(userResponse.status)
     } else {

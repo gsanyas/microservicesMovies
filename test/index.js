@@ -5,8 +5,13 @@ const interface = "http://localhost:8000/";
 
 // Obtain a service admin token
 
-const responseAdmin = await axios.get(
-    interface + "user/login/admin@email.com/adminpass"
+const responseAdmin = await axios.post(
+    interface + "user/login",
+    {
+        address: "admin@email.com",
+        password: "adminpass",
+    },
+    { headers: { accept: "application/json" } }
 );
 const adminCookie = responseAdmin.headers["set-cookie"];
 console.log("Admin cookie: " + JSON.stringify(adminCookie));
@@ -22,7 +27,7 @@ const catalogCreationResponse = await axios.post(
             rights: "3",
         },
     },
-    { headers: { cookie: adminCookie } }
+    { headers: { cookie: adminCookie, accept: "application/json" } }
 );
 console.log(
     "Created catalog admin: " + JSON.stringify(catalogCreationResponse.data)
@@ -30,8 +35,10 @@ console.log(
 
 // Login with catalog admin account
 
-const responseCatalog = await axios.get(
-    interface + "user/login/catalog@email.com/cata"
+const responseCatalog = await axios.post(
+    interface + "user/login",
+    { address: "catalog@email.com", password: "cata" },
+    { headers: { accept: "application/json" } }
 );
 const catalogCookie = responseCatalog.headers["set-cookie"];
 console.log("Catalog cookie: " + JSON.stringify(catalogCookie));
@@ -47,7 +54,7 @@ const movieCreationResponse = await axios.post(
             genre: "sci-fi",
         },
     },
-    { headers: { cookie: catalogCookie } }
+    { headers: { cookie: catalogCookie, accept: "application/json" } }
 );
 console.log("Created movie: " + JSON.stringify(movieCreationResponse.data));
 
@@ -62,14 +69,16 @@ const clientCreationResponse = await axios.post(
             rights: "1",
         },
     },
-    { headers: { cookie: adminCookie } }
+    { headers: { cookie: adminCookie, accept: "application/json" } }
 );
 console.log("Created client: " + JSON.stringify(clientCreationResponse.data));
 
 // Login with client account
 
-const responseClient = await axios.get(
-    interface + "user/login/client@email.com/client"
+const responseClient = await axios.post(
+    interface + "user/login",
+    { address: "client@email.com", password: "client" },
+    { headers: { accept: "application/json" } }
 );
 const clientCookie = responseClient.headers["set-cookie"];
 console.log("Client cookie: " + JSON.stringify(clientCookie));
