@@ -20,7 +20,7 @@
     },
     "scripts": {
         "test": "jest",
-        "start": "node -r dotenv/config server.js"
+        "start": "node -r dotenv/config src/server.js"
     },
     "jest": {
         "verbose": true
