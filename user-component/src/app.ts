@@ -30,7 +30,7 @@ app.post("/add", checkRights, (req, res) => {
     }
 })
 
-app.get("login/:address/:password", (req, res) => {
+app.get("/login/:address/:password", (req, res) => {
     const user: User = findByAddress(req.params.address)
     if (user) {
         if (user.password === req.params.password) {
