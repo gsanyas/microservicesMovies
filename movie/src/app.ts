@@ -42,7 +42,7 @@ app.get("/find/:title", (req, res) => {
 app.post("/archive/:id", checkRights, (req, res) => {
     const getId = (): number => {
         try {
-            return parseInt(req.params.id)
+            return parseInt(req.params.id,10)
         } catch (error) {
             return undefined
         }
@@ -59,7 +59,7 @@ app.post("/archive/:id", checkRights, (req, res) => {
 app.get("/get_movie/:id", (req, res) => {
     const getId = (): number => {
         try {
-            return parseInt(req.params.id)
+            return parseInt(req.params.id,10)
         } catch (error) {
             return undefined
         }

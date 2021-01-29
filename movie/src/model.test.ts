@@ -23,35 +23,35 @@ let movieAttributes: MovieAttributes = {
     genre: "TestGenre",
 }
 
-let movieFake: Movie = {
+const movieFake: Movie = {
     title: "fakeTitle",
     director: "fakeDirector",
     genre: "fakeGenre",
     id: -1,
 }
 
-let movieFake2: Movie = {
+const movieFake2: Movie = {
     title: "fakeTitle",
     director: "fakeDirector",
     genre: "fakeGenre",
     id: -2,
 }
 
-let movieFake3: Movie = {
+const movieFake3: Movie = {
     title: "fakeTitle2",
     director: "fakeDirector",
     genre: "fakeGenre",
     id: -1,
 }
 
-let movieFake4: Movie = {
+const movieFake4: Movie = {
     title: "fakeTitle",
     director: "fakeDirector2",
     genre: "fakeGenre",
     id: -1,
 }
 
-let movieFake5: Movie = {
+const movieFake5: Movie = {
     title: "fakeTitle",
     director: "fakeDirector",
     genre: "fakeGenre2",
