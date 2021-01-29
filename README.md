@@ -1,5 +1,9 @@
 # microservicesMovies
 
+Ce programme est essentiellement une démonstration d'une architecture microservices pour un travail scolaire.
+
+Il s'agit du minimal viable product d'une API permettant de gérer un catalogue de films.
+
 ## Architecture
 
 Nous avons développé 4 composants: crypto, movie, user-component, et mainInterface.
@@ -30,6 +34,8 @@ Nous n'avons pas réussi à faire communiquer les microservices entre eux.
 ## Documentation
 
 Toutes les requêtes doivent s'effectuer sur l'interface mainInterface.
+
+L'authentification se fait via un token chiffré contenant les informations utilisateur, en particulier ses droits administratifs.
 
 Ressources :
 
