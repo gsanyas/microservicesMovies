@@ -10,4 +10,14 @@ COPY package-lock.json .
 
 RUN npm install
 
-EXPOSE 8080
+COPY . .
+
+RUN npm run build
+
+COPY tsconfig.json ./dist/
+COPY tslint.json ./dist/
+
+WORKDIR ./dist
+
+EXPOSE 3000 
+CMD node src/index.js

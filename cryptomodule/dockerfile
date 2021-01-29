@@ -10,4 +10,4 @@ RUN openssl rand 128 > sym_keyfile.key
 
 RUN npm install
 
-EXPOSE 8080
+EXPOSE 3000
