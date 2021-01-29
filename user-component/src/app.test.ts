@@ -59,7 +59,12 @@ describe("POST /add", () => {
         await request(app)
             .post("/add")
             .set(validConfig)
-            .send({ user: { address: "testAdd", password: "testAddPassword" } })
+            .send({
+                user: {
+                    address: "testlogin@email.com",
+                    password: "testAddPassword",
+                },
+            })
             .expect(415)
     })
     test("It should return a 201 created status with a user when everything is correct", async () => {
@@ -68,7 +73,7 @@ describe("POST /add", () => {
             .set(validConfig)
             .send({
                 user: {
-                    address: "testAdd",
+                    address: "testlogin@email.com",
                     password: "testAddPass",
                     rights: "1",
                 },
@@ -90,21 +95,21 @@ describe("GET /login/:address/:password", () => {
     test("It should return a user", async () => {
         await request(app)
             .get("/login/testlogin@email.com/testLoginPassword")
-            .set(validConfig)
+            .set({ Accept: "application/json" })
             .expect(200)
             .then((result) => expect(isUser(result.body)).toBe(true))
     })
     test("It should return a 404 error when it cannot find the user", async () => {
         await request(app)
             .get("/login/testWrongAddress/testLoginPassword")
-            .set(validConfig)
+            .set({ Accept: "application/json" })
             .expect(404)
     })
     test("It should return a 401 error when the password is incorrect", async () => {
         await request(app)
             .get("/login/testlogin@email.com/testWrongPassword")
-            .set(validConfig)
-            .expect(404)
+            .set({ Accept: "application/json" })
+            .expect(401)
     })
 })
 
@@ -156,16 +161,19 @@ describe("GET /get_user/:id", () => {
     test("It should return a 415 error with the wrong parameter", async () => {
         await request(app)
             .get("/get_user/badParam")
-            .set(validConfig)
+            .set({ Accept: "application/json" })
             .expect(415)
     })
     test("It should return a 404 error if the user does not exist", async () => {
-        await request(app).get("/get_user/1000").set(validConfig).expect(404)
+        await request(app)
+            .get("/get_user/1000")
+            .set({ Accept: "application/json" })
+            .expect(404)
     })
     test("It should return the user if everything is correct", async () => {
         await request(app)
             .get("/get_user/" + tempUser.id)
-            .set(validConfig)
+            .set({ Accept: "application/json" })
             .expect(200)
             .then((result) => expect(result.body).toEqual(tempUser))
     })

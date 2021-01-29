@@ -18,7 +18,7 @@ app.use(express.json())
 
 app.post("/add", checkRights, (req, res) => {
     if (req.body && req.body.user) {
-        const user: UserAttributes = toUserAttributes(req.body.movie)
+        const user: UserAttributes = toUserAttributes(req.body.user)
         if (user) {
             const data: User = createUser(user)
             res.status(201).json(data)
