@@ -1,6 +1,5 @@
 import { app } from "./app"
-import config from "../config.json"
 
-app.listen(config.port, () => {
+app.listen(process.env.PORT, () => {
     console.log("Server started !")
 })

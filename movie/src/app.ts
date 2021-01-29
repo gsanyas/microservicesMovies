@@ -12,7 +12,7 @@ import {
 } from "./model"
 
 const app = express()
-app.use(cors({origin: process.env.ORIGIN}))
+app.use(cors({ origin: process.env.ORIGIN }))
 // app.use(cors({ origin: config.origin }))
 app.use(express.json())
 
