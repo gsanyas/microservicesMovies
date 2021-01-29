@@ -12,7 +12,7 @@ import {
 } from "./model"
 
 const app = express()
-app.use(cors())
+app.use(cors({ origin: process.env.ORIGIN }))
 // app.use(cors({ origin: config.origin }))
 app.use(express.json())
 
@@ -30,7 +30,7 @@ app.post("/add", checkRights, (req, res) => {
     }
 })
 
-app.get("/find/:title", checkRights, (req, res) => {
+app.get("/find/:title", (req, res) => {
     const movie: Movie = findByTitle(req.params.title)
     if (movie) {
         res.status(200).json(movie)
@@ -42,7 +42,7 @@ app.get("/find/:title", checkRights, (req, res) => {
 app.post("/archive/:id", checkRights, (req, res) => {
     const getId = (): number => {
         try {
-            return parseInt(req.params.id)
+            return parseInt(req.params.id,10)
         } catch (error) {
             return undefined
         }
@@ -56,10 +56,10 @@ app.post("/archive/:id", checkRights, (req, res) => {
     }
 })
 
-app.get("/get_movie/:id", checkRights, (req, res) => {
+app.get("/get_movie/:id", (req, res) => {
     const getId = (): number => {
         try {
-            return parseInt(req.params.id)
+            return parseInt(req.params.id,10)
         } catch (error) {
             return undefined
         }

@@ -87,12 +87,6 @@ describe("GET /find/:title", () => {
         })
     })
     afterEach(restore)
-    test("It should return a 401 error without the right authorization", async () => {
-        await request(app)
-            .get("/find/testFindTitle")
-            .set({ Accept: "application/json" })
-            .expect(401)
-    })
     test("It should return a movie", async () => {
         await request(app)
             .get("/find/testFindTitle")
@@ -147,12 +141,6 @@ describe("GET /get_movie/:id", () => {
         })
     })
     afterEach(restore)
-    test("It should return a 401 error without the right authorization", async () => {
-        await request(app)
-            .get("/get_movie/" + tempMovie.id)
-            .set({ Accept: "application/json" })
-            .expect(401)
-    })
     test("It should return a 415 error with the wrong parameter", async () => {
         await request(app).get("/get_movie/badParam").set(validConfig).expect(415)
     })

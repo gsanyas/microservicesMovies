@@ -23,35 +23,35 @@ let userAttributes: UserAttributes = {
     rights: "1",
 }
 
-let userFake: User = {
+const userFake: User = {
     address: "fakeAddress",
     password: "fakePassword",
     rights: "0",
     id: -1,
 }
 
-let userFake2: User = {
+const userFake2: User = {
     address: "fakeAddress",
     password: "fakePassword",
     rights: "0",
     id: -2,
 }
 
-let userFake3: User = {
+const userFake3: User = {
     address: "fakeAddress2",
     password: "fakePassword",
     rights: "0",
     id: -1,
 }
 
-let userFake4: User = {
+const userFake4: User = {
     address: "fakeAddress",
     password: "fakePassword2",
     rights: "0",
     id: -1,
 }
 
-let userFake5: User = {
+const userFake5: User = {
     address: "fakeAddress",
     password: "fakePassword",
     rights: "1",
