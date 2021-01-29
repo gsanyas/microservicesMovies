@@ -56,7 +56,7 @@ app.post("/archive/:id", checkRights, (req, res) => {
     }
 })
 
-app.get("/get_movie/:id", checkRights, (req, res) => {
+app.get("/get_movie/:id", (req, res) => {
     const getId = (): number => {
         try {
             return parseInt(req.params.id)
