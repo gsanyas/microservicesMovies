@@ -15,8 +15,8 @@ const checkToken = async (
             const userString = response.data
             try {
                 const user = JSON.parse(userString)
-                req.headers["id"] = user["id"]
-                req.headers["rights"] = user["rights"]
+                req.headers.id = user.id
+                req.headers.rights = user.rights
                 next()
             } catch (error) {
                 res.status(401).send("Incorrect token value")
