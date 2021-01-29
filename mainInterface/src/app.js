@@ -1,5 +1,5 @@
 const app = express()
-app.use(cors({ credentials: true, origin: config.origin }))
+app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 
