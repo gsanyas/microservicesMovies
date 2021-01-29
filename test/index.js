@@ -10,9 +10,8 @@ const test = async () => {
         address: "admin@email.com",
         password: "adminpass",
     });
-    console.log("responseAdmin status: " + JSON.stringify(responseAdmin));
-    const adminCookie = responseAdmin.headers["set-cookie"];
-    console.log("Admin cookie: " + JSON.stringify(adminCookie));
+    const adminToken = responseAdmin.data;
+    console.log("Admin token: " + adminToken);
 
     // Use it to create a new catalog admin
 
@@ -25,7 +24,7 @@ const test = async () => {
                 rights: "3",
             },
         },
-        { headers: { cookie: adminCookie } }
+        { headers: { token: adminToken } }
     );
     console.log(
         "Created catalog admin: " + JSON.stringify(catalogCreationResponse.data)
@@ -37,8 +36,8 @@ const test = async () => {
         address: "catalog@email.com",
         password: "cata",
     });
-    const catalogCookie = responseCatalog.headers["set-cookie"];
-    console.log("Catalog cookie: " + JSON.stringify(catalogCookie));
+    const catalogToken = responseCatalog.data;
+    console.log("Catalog token: " + JSON.stringify(catalogToken));
 
     // Add a movie with catalog account
 
@@ -51,7 +50,7 @@ const test = async () => {
                 genre: "sci-fi",
             },
         },
-        { headers: { cookie: catalogCookie } }
+        { headers: { token: catalogToken } }
     );
     console.log("Created movie: " + JSON.stringify(movieCreationResponse.data));
 
@@ -66,7 +65,7 @@ const test = async () => {
                 rights: "1",
             },
         },
-        { headers: { cookie: adminCookie } }
+        { headers: { token: adminToken } }
     );
     console.log(
         "Created client: " + JSON.stringify(clientCreationResponse.data)
@@ -78,14 +77,14 @@ const test = async () => {
         address: "client@email.com",
         password: "client",
     });
-    const clientCookie = responseClient.headers["set-cookie"];
-    console.log("Client cookie: " + JSON.stringify(clientCookie));
+    const clientToken = responseClient.data;
+    console.log("Client token: " + JSON.stringify(clientToken));
 
     // Search for the movie title with client account
 
     const searchResponse = await axios.get(
-        interface + "movie/find/" + movieCreationResponse.data.id,
-        { headers: { cookie: clientCookie } }
+        interface + "movie/find/" + movieCreationResponse.data.title,
+        { headers: { token: clientToken } }
     );
     console.log("Obtained movie: " + searchResponse.data);
 };

@@ -30,18 +30,14 @@ app.post("/user/login", async (req, res) => {
                 userResponse.data
         )
     } else {
-        const cryptoURI =
-            process.env.CRYPTO_COMPONENT_URI +
-            "/encryptUser/" +
-            JSON.stringify(userResponse.data)
-        const cryptoResponse = await axios.get(cryptoURI)
-        if (cryptoResponse.status === 404) {
+        const cryptoURI = process.env.CRYPTO_COMPONENT_URI + "/encryptUser"
+        const cryptoResponse = await axios.put(cryptoURI, userResponse.data)
+        if (cryptoResponse.status === 200) {
+            res.status(200).send(cryptoResponse.data)
+        } else {
             res.status(502).send(
                 "Error while creating your authentication token. Sorry for the inconvenience."
             )
-        } else {
-            res.cookie("auth", cryptoResponse.data, cookieConfig)
-            res.status(200).send(cryptoResponse.data)
         }
     }
 })
@@ -50,14 +46,17 @@ app.post("/user/login", async (req, res) => {
 
 app.get("/movie/find/:title", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/find/" + req.params.title
-    const response = await axios.post(URI, req.body, {
-        headers: { rights: req.headers.rights, accept: "application/json" },
-    })
-    if (response.status === 200) {
-        res.status(response.status).send(response.data)
-    } else {
-        console.warn("Error in CATALOG COMPONENT : " + response.statusText)
-        res.status(502).send(response.statusText)
+    try {
+        const response = await axios.get(URI, {
+            headers: { rights: req.headers.rights, accept: "application/json" },
+        })
+        if (response.status === 200) {
+            res.status(response.status).send(response.data)
+        } else {
+            res.status(502).send(response.statusText)
+        }
+    } catch (error) {
+        res.status(502).send("Error in CATALOG COMPONENT : " + error)
     }
 })
 
@@ -71,7 +70,6 @@ app.post("/user/add", checkToken, async (req, res) => {
     if (response.status === 200 || response.status === 201) {
         res.status(response.status).send(response.data)
     } else {
-        console.warn("Error in USER COMPONENT : " + response.statusText)
         res.status(502).send(response.statusText)
     }
 })
@@ -84,7 +82,6 @@ app.post("/user/archive/:id", checkToken, async (req, res) => {
     if (response.status === 200 || response.status === 204) {
         res.sendStatus(204)
     } else {
-        console.warn("Error in USER COMPONENT : " + response.statusText)
         res.status(502).send(response.statusText)
     }
 })
@@ -99,7 +96,6 @@ app.post("/movie/add", checkToken, async (req, res) => {
     if (response.status === 200 || response.status === 201) {
         res.status(response.status).send(response.data)
     } else {
-        console.warn("Error in CATALOG COMPONENT : " + response.statusText)
         res.status(502).send(response.statusText)
     }
 })
@@ -112,7 +108,6 @@ app.post("/movie/archive/:id", checkToken, async (req, res) => {
     if (response.status === 200 || response.status === 204) {
         res.sendStatus(204)
     } else {
-        console.warn("Error in CATALOG COMPONENT : " + response.statusText)
         res.status(502).send(response.statusText)
     }
 })
