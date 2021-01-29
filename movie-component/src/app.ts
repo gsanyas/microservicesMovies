@@ -30,7 +30,7 @@ app.post("/add", checkRights, (req, res) => {
     }
 })
 
-app.get("/find/:title", checkRights, (req, res) => {
+app.get("/find/:title", (req, res) => {
     const movie: Movie = findByTitle(req.params.title)
     if (movie) {
         res.status(200).json(movie)
