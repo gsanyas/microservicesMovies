@@ -5,7 +5,7 @@ const config = require("../config.json");
 const { readToken, createToken } = require("./tokenService");
 
 const app = express();
-app.use(cors({ credentials: true, origin: config.origin }));
+app.use(cors(process.env.ORIGIN));
 app.use(cookieParser());
 app.use(express.json());
 
@@ -20,7 +20,7 @@ app.get("/encryptUser/:user", (req, res) => {
             res.sendStatus(404);
         }
     } else {
-        console.log('here')
+        console.log("here");
         res.sendStatus(404);
     }
 });
