@@ -1,0 +1,19 @@
+{
+    "current_id": 2,
+    "userList": [
+        {
+            "id": 0,
+            "address": "admin@email.com",
+            "password": "adminpass",
+            "rights": "2"
+        }
+    ],
+    "archive": [
+        {
+            "id": 1,
+            "address": "example@email.com",
+            "password": "uselesspass",
+            "rights": "1"
+        }
+    ]
+}
