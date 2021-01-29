@@ -1,134 +1,134 @@
 import {
-    toMovieAttributes,
-    createMovie,
-    deleteMovie,
-    equalMovie,
+    toUserAttributes,
+    createUser,
+    deleteUser,
+    equalUser,
     findById,
-    findByTitle,
-    hasMovieAttributes,
-    isMovie,
-    Movie,
-    MovieAttributes,
+    findByAddress,
+    hasUserAttributes,
+    isUser,
+    User,
+    UserAttributes,
 } from "./model"
-import movies from "./data/movies.json"
+import users from "./data/users.json"
 import { copyObject } from "./utils"
 
-const defaultMovieList: Movie[] = copyObject(movies.movieList)
-const defaultId: number = movies.current_id
-const defaultArchive: Movie[] = copyObject(movies.archive)
+const defaultUserList: User[] = copyObject(users.userList)
+const defaultId: number = users.current_id
+const defaultArchive: User[] = copyObject(users.archive)
 
-let movieAttributes: MovieAttributes = {
-    title: "TestTitle",
-    director: "TestDirector",
-    genre: "TestGenre",
+let userAttributes: UserAttributes = {
+    address: "TestAddress",
+    password: "TestPassword",
+    rights: "1",
 }
 
-let movieFake: Movie = {
-    title: "fakeTitle",
-    director: "fakeDirector",
-    genre: "fakeGenre",
+let userFake: User = {
+    address: "fakeAddress",
+    password: "fakePassword",
+    rights: "0",
     id: -1,
 }
 
-let movieFake2: Movie = {
-    title: "fakeTitle",
-    director: "fakeDirector",
-    genre: "fakeGenre",
+let userFake2: User = {
+    address: "fakeAddress",
+    password: "fakePassword",
+    rights: "0",
     id: -2,
 }
 
-let movieFake3: Movie = {
-    title: "fakeTitle2",
-    director: "fakeDirector",
-    genre: "fakeGenre",
+let userFake3: User = {
+    address: "fakeAddress2",
+    password: "fakePassword",
+    rights: "0",
     id: -1,
 }
 
-let movieFake4: Movie = {
-    title: "fakeTitle",
-    director: "fakeDirector2",
-    genre: "fakeGenre",
+let userFake4: User = {
+    address: "fakeAddress",
+    password: "fakePassword2",
+    rights: "0",
     id: -1,
 }
 
-let movieFake5: Movie = {
-    title: "fakeTitle",
-    director: "fakeDirector",
-    genre: "fakeGenre2",
+let userFake5: User = {
+    address: "fakeAddress",
+    password: "fakePassword",
+    rights: "1",
     id: -1,
 }
 
 const resetData = () => {
-    movies.movieList = copyObject(defaultMovieList)
-    movies.current_id = defaultId
-    movies.archive = copyObject(defaultArchive)
+    users.userList = copyObject(defaultUserList)
+    users.current_id = defaultId
+    users.archive = copyObject(defaultArchive)
 }
 
-const resetMovieAttributes = () => {
-    movieAttributes = {
-        title: "TestTitle",
-        director: "TestDirector",
-        genre: "TestGenre",
+const resetUserAttributes = () => {
+    userAttributes = {
+        address: "TestAddress",
+        password: "TestPassword",
+        rights: "1",
     }
 }
 
 const fullReset = () => {
     resetData()
-    resetMovieAttributes()
+    resetUserAttributes()
 }
 
-describe("CreateMovie", () => {
+describe("CreateUser", () => {
     beforeEach(fullReset)
     afterEach(fullReset)
-    test("It creates a movie", () => {
-        const length = movies.movieList.length
-        const result = createMovie(movieAttributes)
+    test("It creates a user", () => {
+        const length = users.userList.length
+        const result = createUser(userAttributes)
         expect(result).toBeDefined()
-        expect(result.title).toEqual(movieAttributes.title)
-        expect(result.director).toEqual(movieAttributes.director)
-        expect(result.genre).toEqual(movieAttributes.genre)
+        expect(result.address).toEqual(userAttributes.address)
+        expect(result.password).toEqual(userAttributes.password)
+        expect(result.rights).toEqual(userAttributes.rights)
         expect(result.id).toBeDefined()
-        expect(movies.movieList.length).toBe(length + 1)
+        expect(users.userList.length).toBe(length + 1)
     })
     test("It returns undefined", () => {
-        createMovie(movieAttributes)
-        const length = movies.movieList.length
-        const result = createMovie(movieAttributes)
+        createUser(userAttributes)
+        const length = users.userList.length
+        const result = createUser(userAttributes)
         expect(result).toBeUndefined()
-        expect(length).toBe(movies.movieList.length)
+        expect(length).toBe(users.userList.length)
     })
 })
 
-describe("findByTitle", () => {
+describe("findByAddress", () => {
     beforeEach(fullReset)
     afterEach(fullReset)
-    test("It returns undefined when a movie does not exists", () => {
-        const result = findByTitle(movieAttributes.title)
+    test("It returns undefined when a user does not exists", () => {
+        const result = findByAddress(userAttributes.address)
         expect(result).toBeUndefined()
     })
-    test("It returns a movie when it exists", () => {
-        createMovie(movieAttributes)
-        const result = findByTitle(movieAttributes.title)
+    test("It returns a user when it exists", () => {
+        createUser(userAttributes)
+        const result = findByAddress(userAttributes.address)
         expect(result).toBeDefined()
-        expect(result.title).toBe(movieAttributes.title)
+        expect(result.address).toBe(userAttributes.address)
     })
 })
 
-describe("equalMovie", () => {
-    beforeEach(resetMovieAttributes)
-    afterEach(resetMovieAttributes)
-    test("It returns true when movies are the same", () => {
-        const result = equalMovie(movieFake, movieFake)
+describe("equalUser", () => {
+    beforeEach(resetUserAttributes)
+    afterEach(resetUserAttributes)
+    test("It returns true when users are the same", () => {
+        const result = equalUser(userFake, userFake)
         expect(result).toBe(true)
     })
-    test("It returns false when movies are different", () => {
-        const result1 = equalMovie(movieFake, movieFake2)
+    test("It returns false when users are different", () => {
+        const result1 = equalUser(userFake, userFake2)
         expect(result1).toBe(false)
-        const result2 = equalMovie(movieFake, movieFake3)
+        const result2 = equalUser(userFake, userFake3)
         expect(result2).toBe(false)
-        const result3 = equalMovie(movieFake, movieFake4)
+        const result3 = equalUser(userFake, userFake4)
         expect(result3).toBe(false)
-        const result4 = equalMovie(movieFake, movieFake5)
+        const result4 = equalUser(userFake, userFake5)
         expect(result4).toBe(false)
     })
 })
@@ -136,103 +136,103 @@ describe("equalMovie", () => {
 describe("findById", () => {
     beforeEach(fullReset)
     afterEach(fullReset)
-    test("It finds a movie", () => {
-        const movie = createMovie(movieAttributes)
-        const result = findById(movie.id)
-        expect(movie).toEqual(result)
+    test("It finds a user", () => {
+        const user = createUser(userAttributes)
+        const result = findById(user.id)
+        expect(user).toEqual(result)
     })
-    test("It returns undefined when there is no movie", () => {
-        const result = findById(movieFake.id)
+    test("It returns undefined when there is no user", () => {
+        const result = findById(userFake.id)
         expect(result).toBeUndefined()
     })
 })
 
-describe("deleteMovie", () => {
+describe("deleteUser", () => {
     beforeEach(fullReset)
     afterEach(fullReset)
-    test("It deletes a movie that exists", () => {
-        const movie = createMovie(movieAttributes)
-        const lengthList = movies.movieList.length
-        const lengthArchive = movies.archive.length
-        deleteMovie(movie.id)
-        const inMovieList = findById(movie.id)
-        expect(inMovieList).toBeUndefined()
-        const inArchive = movies.archive.find((archivedMovie: Movie) =>
-            equalMovie(archivedMovie, movie)
+    test("It deletes a user that exists", () => {
+        const user = createUser(userAttributes)
+        const lengthList = users.userList.length
+        const lengthArchive = users.archive.length
+        deleteUser(user.id)
+        const inUserList = findById(user.id)
+        expect(inUserList).toBeUndefined()
+        const inArchive = users.archive.find((archivedUser: User) =>
+            equalUser(archivedUser, user)
         )
         expect(inArchive).toBeDefined()
-        expect(movies.movieList.length).toBe(lengthList - 1)
-        expect(movies.archive.length).toBe(lengthArchive + 1)
+        expect(users.userList.length).toBe(lengthList - 1)
+        expect(users.archive.length).toBe(lengthArchive + 1)
     })
-    test("It does nothing when the movie don't exist", () => {
-        const lengthList = movies.movieList.length
-        const lengthArchive = movies.archive.length
-        deleteMovie(movieFake.id)
-        expect(movies.movieList.length).toBe(lengthList)
-        expect(movies.archive.length).toBe(lengthArchive)
+    test("It does nothing when the user don't exist", () => {
+        const lengthList = users.userList.length
+        const lengthArchive = users.archive.length
+        deleteUser(userFake.id)
+        expect(users.userList.length).toBe(lengthList)
+        expect(users.archive.length).toBe(lengthArchive)
     })
 })
 
-describe("isMovie", () => {
-    beforeAll(resetMovieAttributes)
-    test("It returns true if it is a movie", () => {
-        const result = isMovie(movieFake)
+describe("isUser", () => {
+    beforeAll(resetUserAttributes)
+    test("It returns true if it is a user", () => {
+        const result = isUser(userFake)
         expect(result).toBe(true)
     })
-    test("It returns false if it is not a movie", () => {
-        const result = isMovie(movieAttributes)
+    test("It returns false if it is not a user", () => {
+        const result = isUser(userAttributes)
         expect(result).toBe(false)
     })
 })
 
-describe("hasMovieAttributes", () => {
-    beforeAll(resetMovieAttributes)
-    test("It returns true if it is a movieAttributes", () => {
-        const result = hasMovieAttributes(movieAttributes)
+describe("hasUserAttributes", () => {
+    beforeAll(resetUserAttributes)
+    test("It returns true if it is a userAttributes", () => {
+        const result = hasUserAttributes(userAttributes)
         expect(result).toBe(true)
     })
-    test("It returns false if it has not movieAttributes", () => {
-        const result1 = hasMovieAttributes({
-            title: "fakeAttributesTitle",
-            director: "fakeAttributesDirector",
+    test("It returns false if it has not userAttributes", () => {
+        const result1 = hasUserAttributes({
+            address: "fakeAttributesAddress",
+            password: "fakeAttributesPassword",
         })
         expect(result1).toBe(false)
-        const result2 = hasMovieAttributes({
-            genre: "fakeAttributesGenre",
-            director: "fakeAttributesDirector",
+        const result2 = hasUserAttributes({
+            rights: "0",
+            password: "fakeAttributesPassword",
         })
         expect(result2).toBe(false)
-        const result3 = hasMovieAttributes({
-            title: "fakeAttributesTitle",
-            genre: "fakeAttributesGenre",
+        const result3 = hasUserAttributes({
+            address: "fakeAttributesAddress",
+            rights: "0",
         })
         expect(result3).toBe(false)
     })
 })
 
-describe("toMovieAttributes", () => {
-    test("It returns a movie attributes if the correct attributes are given", () => {
-        const result = toMovieAttributes({
-            title: "convertTitle",
-            director: "convertDirector",
-            genre: "convertGenre",
+describe("toUserAttributes", () => {
+    test("It returns a userAttributes if the correct attributes are given", () => {
+        const result = toUserAttributes({
+            address: "convertAddress",
+            password: "convertPassword",
+            rights: "1",
         })
-        expect(hasMovieAttributes(result)).toBe(true)
+        expect(hasUserAttributes(result)).toBe(true)
     })
     test("It returns undefined if the attributes are incorrect", () => {
-        const result1 = toMovieAttributes({
-            title: "fakeAttributesTitle",
-            director: "fakeAttributesDirector",
+        const result1 = toUserAttributes({
+            address: "fakeAttributesAddress",
+            password: "fakeAttributesPassword",
         })
         expect(result1).toBeUndefined()
-        const result2 = toMovieAttributes({
-            genre: "fakeAttributesGenre",
-            director: "fakeAttributesDirector",
+        const result2 = toUserAttributes({
+            rights: "0",
+            password: "fakeAttributesPassword",
         })
         expect(result2).toBeUndefined()
-        const result3 = toMovieAttributes({
-            title: "fakeAttributesTitle",
-            genre: "fakeAttributesGenre",
+        const result3 = toUserAttributes({
+            address: "fakeAttributesAddress",
+            rights: "0",
         })
         expect(result3).toBeUndefined()
     })
