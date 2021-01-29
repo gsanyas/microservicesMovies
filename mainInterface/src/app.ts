@@ -17,6 +17,7 @@ const cookieConfig = {
 }
 
 // LOGIN : it's a special request
+
 app.post("/user/login", async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/login"
     const userResponse = await axios.post(URI, req.body, {
