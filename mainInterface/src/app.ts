@@ -46,9 +46,22 @@ app.get("/user/login/:address/:password", async (req, res) => {
 
 // CLIENT requests
 
+app.get("/catalog/find/:title", checkToken, async (req, res) => {
+    const URI = process.env.CATALOG_COMPONENT_URI + "/find/" + req.params.title
+    const response = await axios.post(URI, req.body, {
+        headers: { rights: req.headers.rights, accept: "application/json" },
+    })
+    if (response.status === 200) {
+        res.status(response.status).send(response.data)
+    } else {
+        console.warn("Error in CATALOG COMPONENT : " + response.statusText)
+        res.status(502).send(response.statusText)
+    }
+})
+
 // SERVICE ADMIN requests
 
-app.post("/add", checkToken, async (req, res) => {
+app.post("/user/add", checkToken, async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/add"
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
@@ -61,7 +74,7 @@ app.post("/add", checkToken, async (req, res) => {
     }
 })
 
-app.post("/archive/:id", checkToken, async (req, res) => {
+app.post("/user/archive/:id", checkToken, async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/archive/" + req.params.id
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
@@ -76,7 +89,7 @@ app.post("/archive/:id", checkToken, async (req, res) => {
 
 // CATALOG ADMIN requests
 
-app.post("/add", checkToken, async (req, res) => {
+app.post("/catalog/add", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/add"
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
@@ -89,7 +102,7 @@ app.post("/add", checkToken, async (req, res) => {
     }
 })
 
-app.post("/archive/:id", checkToken, async (req, res) => {
+app.post("/catalog/archive/:id", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/archive/" + req.params.id
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
