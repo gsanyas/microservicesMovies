@@ -1,6 +1,6 @@
 const app = require("./app");
 const config = require("../config.json");
 
-app.listen(config.port, () => {
+app.listen(process.env.EXPRESS_PORT, () => {
     console.log("Server started !");
 });
