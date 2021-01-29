@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors"
-import cookieParser from "cookie-parser"
 import axios from "axios"
+import cookieParser from 'cookie-parser';
 
 const app = express()
 app.use(cors())
@@ -9,7 +9,7 @@ app.use(cookieParser())
 app.use(express.json())
 
 // LOGIN : it's a special request
-app.get("/user/login/:address/:password", (req,res) => {
+app.get("/user/login/:address/:password", async (req,res) => {
     const URI = process.env.USER_COMPONENT_URI + "/login/" + req.params.address + "/" + req.params.password
     const userResponse = await axios.get(URI)
     if (userResponse.status !== 200) {
@@ -25,4 +25,10 @@ app.get("/user/login/:address/:password", (req,res) => {
     }
 })
 
-module.exports = app
+// SERVICE ADMIN requests
+
+app.post("/add", async (req,res) => {
+    const URI = process.env.USER_COMPONENT_URI + "/add"
+})
+
+export {app}
