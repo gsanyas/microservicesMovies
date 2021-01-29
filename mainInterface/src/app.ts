@@ -17,13 +17,18 @@ const cookieConfig = {
 }
 
 // LOGIN : it's a special request
-app.get("/user/login", async (req, res) => {
+app.post("/user/login", async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/login"
     const userResponse = await axios.post(URI, req.body, {
         headers: { accept: "application/json" },
     })
     if (userResponse.status !== 200) {
-        res.sendStatus(userResponse.status)
+        res.status(502).send(
+            "Error in user component: " +
+                userResponse.status +
+                " - " +
+                userResponse.data
+        )
     } else {
         const cryptoURI =
             process.env.CRYPTO_COMPONENT_URI +
