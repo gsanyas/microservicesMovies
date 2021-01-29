@@ -30,10 +30,14 @@ app.post("/add", checkRights, (req, res) => {
     }
 })
 
-app.get("/find/:address", checkRights, (req, res) => {
+app.get("login/:address/:password", (req, res) => {
     const user: User = findByAddress(req.params.address)
     if (user) {
-        res.status(200).json(user)
+        if (user.password === req.params.password) {
+            res.status(200).json(user)
+        } else {
+            res.sendStatus(401)
+        }
     } else {
         res.sendStatus(404)
     }
@@ -56,7 +60,7 @@ app.post("/archive/:id", checkRights, (req, res) => {
     }
 })
 
-app.get("/get_user/:id", checkRights, (req, res) => {
+app.get("/get_user/:id", (req, res) => {
     const getId = (): number => {
         try {
             return parseInt(req.params.id)
