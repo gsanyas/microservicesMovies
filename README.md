@@ -1,6 +1,8 @@
 # microservicesMovies
 
 
+Auteurs : Guillem Sanyas et Clément Ribes
+
 Ce programme est essentiellement une démonstration d'une architecture microservices pour un travail scolaire.
 
 Il s'agit du minimal viable product d'une API permettant de gérer un catalogue de films.
