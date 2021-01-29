@@ -46,7 +46,7 @@ app.get("/user/login/:address/:password", async (req, res) => {
 
 // CLIENT requests
 
-app.get("/catalog/find/:title", checkToken, async (req, res) => {
+app.get("/movie/find/:title", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/find/" + req.params.title
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
@@ -89,7 +89,7 @@ app.post("/user/archive/:id", checkToken, async (req, res) => {
 
 // CATALOG ADMIN requests
 
-app.post("/catalog/add", checkToken, async (req, res) => {
+app.post("/movie/add", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/add"
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
@@ -102,7 +102,7 @@ app.post("/catalog/add", checkToken, async (req, res) => {
     }
 })
 
-app.post("/catalog/archive/:id", checkToken, async (req, res) => {
+app.post("/movie/archive/:id", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/archive/" + req.params.id
     const response = await axios.post(URI, req.body, {
         headers: { rights: req.headers.rights, accept: "application/json" },
