@@ -30,13 +30,17 @@ app.post("/add", checkRights, (req, res) => {
     }
 })
 
-app.get("/login/:address/:password", (req, res) => {
-    const user: User = findByAddress(req.params.address)
-    if (user) {
-        if (user.password === req.params.password) {
-            res.status(200).json(user)
+app.post("/login", (req, res) => {
+    if (req.body && req.body.address && req.body.password) {
+        const user: User = findByAddress(req.body.address)
+        if (user) {
+            if (user.password === req.body.password) {
+                res.status(200).json(user)
+            } else {
+                res.sendStatus(401)
+            }
         } else {
-            res.sendStatus(401)
+            res.sendStatus(404)
         }
     } else {
         res.sendStatus(404)
@@ -46,7 +50,7 @@ app.get("/login/:address/:password", (req, res) => {
 app.post("/archive/:id", checkRights, (req, res) => {
     const getId = (): number => {
         try {
-            return parseInt(req.params.id,10)
+            return parseInt(req.params.id, 10)
         } catch (error) {
             return undefined
         }
@@ -63,7 +67,7 @@ app.post("/archive/:id", checkRights, (req, res) => {
 app.get("/get_user/:id", (req, res) => {
     const getId = (): number => {
         try {
-            return parseInt(req.params.id,10)
+            return parseInt(req.params.id, 10)
         } catch (error) {
             return undefined
         }
