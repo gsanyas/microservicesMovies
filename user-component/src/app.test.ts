@@ -1,42 +1,42 @@
 import request from "supertest"
 import { app } from "./app"
-import movies from "./data/movies.json"
-import { createMovie, isMovie, Movie } from "./model"
+import users from "./data/users.json"
+import { createUser, isUser, User } from "./model"
 import { copyObject } from "./utils"
 
-let savedMovies: Movie[]
+let savedUsers: User[]
 let savedId: number
-let savedArchive: Movie[]
-const saveMovies = () => {
-    savedMovies = copyObject(movies.movieList)
+let savedArchive: User[]
+const saveUsers = () => {
+    savedUsers = copyObject(users.userList)
 }
-const restoreMovies = () => {
-    movies.movieList = copyObject(savedMovies)
+const restoreUsers = () => {
+    users.userList = copyObject(savedUsers)
 }
 const saveId = () => {
-    savedId = movies.current_id
+    savedId = users.current_id
 }
 const restoreId = () => {
-    movies.current_id = savedId
+    users.current_id = savedId
 }
 const saveArchive = () => {
-    savedArchive = copyObject(movies.archive)
+    savedArchive = copyObject(users.archive)
 }
 const restoreArchive = () => {
-    movies.archive = copyObject(savedArchive)
+    users.archive = copyObject(savedArchive)
 }
 const save = () => {
-    saveMovies()
+    saveUsers()
     saveId()
     saveArchive()
 }
 const restore = () => {
-    restoreMovies()
+    restoreUsers()
     restoreId()
     restoreArchive()
 }
 
-const validConfig = { Accept: "application/json", rights: "3" }
+const validConfig = { Accept: "application/json", rights: "2" }
 
 describe("POST /add", () => {
     beforeEach(save)
@@ -48,29 +48,29 @@ describe("POST /add", () => {
             .send({ uselessField: "uselessValue" })
             .expect(401)
     })
-    test("It should return a 404 status when no movie field in body", async () => {
+    test("It should return a 404 status when no user field in body", async () => {
         await request(app)
             .post("/add")
             .set(validConfig)
             .send({ uselessField: "uselessValue" })
             .expect(404)
     })
-    test("It should return a 415 error status when not good movie type", async () => {
+    test("It should return a 415 error status when not good user type", async () => {
         await request(app)
             .post("/add")
             .set(validConfig)
-            .send({ movie: { title: "testAdd", director: "testAddDirector" } })
+            .send({ user: { address: "testAdd", password: "testAddPassword" } })
             .expect(415)
     })
-    test("It should return a 201 created status with a movie when everything is correct", async () => {
+    test("It should return a 201 created status with a user when everything is correct", async () => {
         await request(app)
             .post("/add")
             .set(validConfig)
             .send({
-                movie: {
-                    title: "testAdd",
-                    director: "testAddDirector",
-                    genre: "testAddGenre",
+                user: {
+                    address: "testAdd",
+                    password: "testAddPass",
+                    rights: "1",
                 },
             })
             .expect(201)
@@ -80,7 +80,7 @@ describe("POST /add", () => {
 describe("GET /find/:title", () => {
     beforeEach(() => {
         save()
-        createMovie({
+        createUser({
             title: "testFindTitle",
             director: "testFindDirector",
             genre: "testFindGenre",
@@ -98,72 +98,75 @@ describe("GET /find/:title", () => {
             .get("/find/testFindTitle")
             .set(validConfig)
             .expect(200)
-            .then((result) => expect(isMovie(result.body)).toBe(true))
+            .then((result) => expect(isUser(result.body)).toBe(true))
     })
     test("It should return a 404 error when it cannot find the movie", async () => {
-        await request(app).get("/find/testWrongTitle").set(validConfig).expect(404)
+        await request(app)
+            .get("/find/testWrongTitle")
+            .set(validConfig)
+            .expect(404)
     })
 })
 
-let tempMovie: Movie
+let tempUser: User
 
 describe("POST /archive/:id", () => {
     beforeEach(() => {
         save()
-        tempMovie = createMovie({
-            title: "testArchiveTitle",
-            director: "testArchiveDirector",
-            genre: "testArchiveGenre",
+        tempUser = createUser({
+            address: "testArchiveAddress",
+            password: "testArchivePassword",
+            rights: "1",
         })
     })
     afterEach(restore)
     test("It should return a 401 error without the right authorization", async () => {
         await request(app)
-            .post("/archive/" + tempMovie.id)
+            .post("/archive/" + tempUser.id)
             .set({ Accept: "application/json" })
             .expect(401)
     })
     test("It should return a 415 error with the wrong parameter", async () => {
-        await request(app).post("/archive/badParam").set(validConfig).expect(415)
+        await request(app)
+            .post("/archive/badParam")
+            .set(validConfig)
+            .expect(415)
     })
-    test("It should return a 304 error if the movie does not exist", async () => {
+    test("It should return a 304 error if the user does not exist", async () => {
         await request(app).post("/archive/1000").set(validConfig).expect(304)
     })
-    test("It should archive the movie and return a 204 success if everything is correct", async () => {
+    test("It should archive the user and return a 204 success if everything is correct", async () => {
         await request(app)
-            .post("/archive/" + tempMovie.id)
+            .post("/archive/" + tempUser.id)
             .set(validConfig)
             .expect(204)
     })
 })
 
-describe("GET /get_movie/:id", () => {
+describe("GET /get_user/:id", () => {
     beforeEach(() => {
         save()
-        tempMovie = createMovie({
-            title: "testArchiveTitle",
-            director: "testArchiveDirector",
-            genre: "testArchiveGenre",
+        tempUser = createUser({
+            address: "testGetAddress",
+            password: "testGetPassword",
+            rights: "1",
         })
     })
     afterEach(restore)
-    test("It should return a 401 error without the right authorization", async () => {
-        await request(app)
-            .get("/get_movie/" + tempMovie.id)
-            .set({ Accept: "application/json" })
-            .expect(401)
-    })
     test("It should return a 415 error with the wrong parameter", async () => {
-        await request(app).get("/get_movie/badParam").set(validConfig).expect(415)
-    })
-    test("It should return a 404 error if the movie does not exist", async () => {
-        await request(app).get("/get_movie/1000").set(validConfig).expect(404)
-    })
-    test("It should return the movie if everything is correct", async () => {
         await request(app)
-            .get("/get_movie/" + tempMovie.id)
+            .get("/get_user/badParam")
+            .set(validConfig)
+            .expect(415)
+    })
+    test("It should return a 404 error if the user does not exist", async () => {
+        await request(app).get("/get_user/1000").set(validConfig).expect(404)
+    })
+    test("It should return the user if everything is correct", async () => {
+        await request(app)
+            .get("/get_user/" + tempUser.id)
             .set(validConfig)
             .expect(200)
-            .then((result) => expect(result.body).toEqual(tempMovie))
+            .then((result) => expect(result.body).toEqual(tempUser))
     })
 })
