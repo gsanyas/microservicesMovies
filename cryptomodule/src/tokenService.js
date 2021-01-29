@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
-const fs = require('fs');
-
+const fs = require("fs");
 
 const readFile = async () => {
     try {
@@ -24,16 +23,15 @@ exports.createToken = async (user) => {
 };
 
 exports.readToken = async (token) => {
-    try {
-        const secret = await readFile();
-        return jwt.verify(token, secret, (err, data) => {
-            if (err) {
-                throw new Error("Invalid token.");
-            } else if (data) {
-                return data;
-            }
-        });
-    } catch (_err) {
-        console.error("Unable to verify the token.");
-    }
+    const secret = await readFile();
+    let result;
+    jwt.verify(token, secret, (err, data) => {
+        if (err) {
+            console.log("Unable to verify the token.");
+            throw new Error("Invalid token.");
+        } else if (data) {
+            result = data;
+        }
+    });
+    return result;
 };

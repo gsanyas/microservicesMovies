@@ -6,15 +6,13 @@ const checkToken = async (
     res: express.Response,
     next: express.NextFunction
 ) => {
-    if (req.cookies.auth) {
-        const auth = req.cookies.auth
-        const cryptoURI =
-            process.env.CRYPTO_COMPONENT_URI + "/decryptUser/" + auth
-        const response = await axios.get(cryptoURI)
+    if ("token" in req.headers) {
+        const auth = req.headers.token
+        const cryptoURI = process.env.CRYPTO_COMPONENT_URI + "/decryptUser"
+        const response = await axios.put(cryptoURI, {token: auth})
         if (response.status === 200) {
-            const userString = response.data
+            const user = response.data
             try {
-                const user = JSON.parse(userString)
                 req.headers.id = user.id
                 req.headers.rights = user.rights
                 next()

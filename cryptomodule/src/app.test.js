@@ -9,9 +9,7 @@ const user = {
 
 describe("Test the encryption path", () => {
     test("It should response the GET method", async () => {
-        const response = await request(app).get(
-            "/encryptUser/" + JSON.stringify(user)
-        );
+        const response = await request(app).put("/encryptUser").send(user);
         expect(response.statusCode).toBe(200);
     });
 });
@@ -19,7 +17,7 @@ describe("Test the encryption path", () => {
 describe("Test the decryption path", () => {
     test("It should response the GET method", async () => {
         const token = await createToken(user);
-        const response = await request(app).get("/decryptUser/" + token);
+        const response = await request(app).put("/decryptUser").send({token: token});
         expect(response.statusCode).toBe(200);
     });
 });

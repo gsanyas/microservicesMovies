@@ -82,7 +82,7 @@ describe("POST /add", () => {
     })
 })
 
-describe("GET /login/:address/:password", () => {
+describe("GET /login", () => {
     beforeEach(() => {
         save()
         createUser({
@@ -94,21 +94,33 @@ describe("GET /login/:address/:password", () => {
     afterEach(restore)
     test("It should return a user", async () => {
         await request(app)
-            .get("/login/testlogin@email.com/testLoginPassword")
+            .post("/login")
             .set({ Accept: "application/json" })
+            .send({
+                address: "testlogin@email.com",
+                password: "testLoginPassword",
+            })
             .expect(200)
             .then((result) => expect(isUser(result.body)).toBe(true))
     })
     test("It should return a 404 error when it cannot find the user", async () => {
         await request(app)
-            .get("/login/testWrongAddress/testLoginPassword")
+            .post("/login")
             .set({ Accept: "application/json" })
+            .send({
+                address: "testWrongAddress",
+                password: "testLoginPassword",
+            })
             .expect(404)
     })
     test("It should return a 401 error when the password is incorrect", async () => {
         await request(app)
-            .get("/login/testlogin@email.com/testWrongPassword")
+            .post("/login")
             .set({ Accept: "application/json" })
+            .send({
+                address: "testlogin@email.com",
+                password: "testWrongPassword",
+            })
             .expect(401)
     })
 })
