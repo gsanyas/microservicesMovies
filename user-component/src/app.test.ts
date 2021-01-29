@@ -77,32 +77,32 @@ describe("POST /add", () => {
     })
 })
 
-describe("GET /find/:title", () => {
+describe("GET /login/:address/:password", () => {
     beforeEach(() => {
         save()
         createUser({
-            title: "testFindTitle",
-            director: "testFindDirector",
-            genre: "testFindGenre",
+            address: "testlogin@email.com",
+            password: "testLoginPassword",
+            rights: "1",
         })
     })
     afterEach(restore)
-    test("It should return a 401 error without the right authorization", async () => {
+    test("It should return a user", async () => {
         await request(app)
-            .get("/find/testFindTitle")
-            .set({ Accept: "application/json" })
-            .expect(401)
-    })
-    test("It should return a movie", async () => {
-        await request(app)
-            .get("/find/testFindTitle")
+            .get("/login/testlogin@email.com/testLoginPassword")
             .set(validConfig)
             .expect(200)
             .then((result) => expect(isUser(result.body)).toBe(true))
     })
-    test("It should return a 404 error when it cannot find the movie", async () => {
+    test("It should return a 404 error when it cannot find the user", async () => {
         await request(app)
-            .get("/find/testWrongTitle")
+            .get("/login/testWrongAddress/testLoginPassword")
+            .set(validConfig)
+            .expect(404)
+    })
+    test("It should return a 401 error when the password is incorrect", async () => {
+        await request(app)
+            .get("/login/testlogin@email.com/testWrongPassword")
             .set(validConfig)
             .expect(404)
     })
