@@ -9,6 +9,13 @@ app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 
+const cookieConfig = {
+    httpOnly: false, // set true in final version, without the proxy
+    //secure: true, // to force https (if you use it)
+    maxAge: 1000000, // ttl in seconds (remove this option and cookie will die when browser is closed)
+    signed: false //the token is already signed
+  };
+
 // LOGIN : it's a special request
 app.get("/user/login/:address/:password", async (req, res) => {
     const URI =
@@ -31,10 +38,13 @@ app.get("/user/login/:address/:password", async (req, res) => {
                 "Error while creating your authentication token. Sorry for the inconvenience."
             )
         } else {
+            res.cookie('auth', cryptoResponse.data, cookieConfig);
             res.status(200).send(cryptoResponse.data)
         }
     }
 })
+
+// CLIENT requests
 
 // SERVICE ADMIN requests
 
@@ -47,7 +57,7 @@ app.post("/add", checkToken, async (req, res) => {
         res.status(response.status).send(response.data)
     } else {
         console.warn("Error in USER COMPONENT : " + response.statusText)
-        res.sendStatus(502)
+        res.status(502).send(response.statusText)
     }
 })
 
@@ -60,10 +70,36 @@ app.post("/archive/:id", checkToken, async (req, res) => {
         res.sendStatus(204)
     } else {
         console.warn("Error in USER COMPONENT : " + response.statusText)
-        res.sendStatus(502)
+        res.status(502).send(response.statusText)
     }
 })
 
-// CATALOG ADMIN REQUESTS
+// CATALOG ADMIN requests
+
+app.post("/add", checkToken, async (req, res) => {
+    const URI = process.env.CATALOG_COMPONENT_URI + "/add"
+    const response = await axios.post(URI, req.body, {
+        headers: { rights: req.headers.rights, accept: "application/json" },
+    })
+    if (response.status === 200 || response.status === 201) {
+        res.status(response.status).send(response.data)
+    } else {
+        console.warn("Error in CATALOG COMPONENT : " + response.statusText)
+        res.status(502).send(response.statusText)
+    }
+})
+
+app.post("/archive/:id", checkToken, async (req, res) => {
+    const URI = process.env.CATALOG_COMPONENT_URI + "/archive/" + req.params.id
+    const response = await axios.post(URI, req.body, {
+        headers: { rights: req.headers.rights, accept: "application/json" },
+    })
+    if (response.status === 200 || response.status === 204) {
+        res.sendStatus(204)
+    } else {
+        console.warn("Error in CATALOG COMPONENT : " + response.statusText)
+        res.status(502).send(response.statusText)
+    }
+})
 
 export { app }
