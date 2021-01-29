@@ -11,10 +11,10 @@ app.use(express.json())
 
 const cookieConfig = {
     httpOnly: false, // set true in final version, without the proxy
-    //secure: true, // to force https (if you use it)
+    // secure: true, // to force https (if you use it)
     maxAge: 1000000, // ttl in seconds (remove this option and cookie will die when browser is closed)
-    signed: false //the token is already signed
-  };
+    signed: false, // the token is already signed
+}
 
 // LOGIN : it's a special request
 app.get("/user/login/:address/:password", async (req, res) => {
@@ -38,7 +38,7 @@ app.get("/user/login/:address/:password", async (req, res) => {
                 "Error while creating your authentication token. Sorry for the inconvenience."
             )
         } else {
-            res.cookie('auth', cryptoResponse.data, cookieConfig);
+            res.cookie("auth", cryptoResponse.data, cookieConfig)
             res.status(200).send(cryptoResponse.data)
         }
     }
