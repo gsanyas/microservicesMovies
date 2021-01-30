@@ -1,5 +1,5 @@
 import {app}  from "./app"
 
-app.listen(process.env.EXPRESS_PORT, () => {
+app.listen(8000, () => {
     console.log("Server started !")
 })

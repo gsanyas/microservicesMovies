@@ -1,5 +1,5 @@
 const app = require("./app");
 
-app.listen(process.env.EXPRESS_PORT, () => {
+app.listen(8001, () => {
     console.log("Server started !");
 });
