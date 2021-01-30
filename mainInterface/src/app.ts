@@ -20,26 +20,30 @@ const cookieConfig = {
 
 app.post("/user/login", async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/login"
-    const userResponse = await axios.post(URI, req.body, {
-        headers: { accept: "application/json" },
-    })
-    if (userResponse.status !== 200) {
-        res.status(502).send(
-            "Error in user component: " +
-                userResponse.status +
-                " - " +
-                userResponse.data
-        )
-    } else {
-        const cryptoURI = process.env.CRYPTO_COMPONENT_URI + "/encryptUser"
-        const cryptoResponse = await axios.put(cryptoURI, userResponse.data)
-        if (cryptoResponse.status === 200) {
-            res.status(200).send(cryptoResponse.data)
-        } else {
+    try {
+        const userResponse = await axios.post(URI, req.body, {
+            headers: { accept: "application/json" },
+        })
+        if (userResponse.status !== 200) {
             res.status(502).send(
-                "Error while creating your authentication token. Sorry for the inconvenience."
+                "Error in user component: " +
+                    userResponse.status +
+                    " - " +
+                    userResponse.data
             )
+        } else {
+            const cryptoURI = process.env.CRYPTO_COMPONENT_URI + "/encryptUser"
+            const cryptoResponse = await axios.put(cryptoURI, userResponse.data)
+            if (cryptoResponse.status === 200) {
+                res.status(200).send(cryptoResponse.data)
+            } else {
+                res.status(502).send(
+                    "Error while creating your authentication token. Sorry for the inconvenience."
+                )
+            }
         }
+    } catch (error) {
+        res.status(502).send("Error in CRYPTO module: " + error.message)
     }
 })
 
@@ -57,7 +61,7 @@ app.get("/movie/find/:title", checkToken, async (req, res) => {
             res.status(502).send(response.statusText)
         }
     } catch (error) {
-        res.status(502).send("Error in CATALOG COMPONENT : " + error)
+        res.status(502).send("Error in CATALOG COMPONENT : " + error.message)
     }
 })
 
@@ -65,25 +69,33 @@ app.get("/movie/find/:title", checkToken, async (req, res) => {
 
 app.post("/user/add", checkToken, async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/add"
-    const response = await axios.post(URI, req.body, {
-        headers: { rights: req.headers.rights, accept: "application/json" },
-    })
-    if (response.status === 200 || response.status === 201) {
-        res.status(response.status).send(response.data)
-    } else {
-        res.status(502).send(response.statusText)
+    try {
+        const response = await axios.post(URI, req.body, {
+            headers: { rights: req.headers.rights, accept: "application/json" },
+        })
+        if (response.status === 200 || response.status === 201) {
+            res.status(response.status).send(response.data)
+        } else {
+            res.status(502).send(response.statusText)
+        }
+    } catch (error) {
+        res.status(502).send("Error in USER module: " + error.message)
     }
 })
 
 app.post("/user/archive/:id", checkToken, async (req, res) => {
     const URI = process.env.USER_COMPONENT_URI + "/archive/" + req.params.id
-    const response = await axios.post(URI, req.body, {
-        headers: { rights: req.headers.rights, accept: "application/json" },
-    })
-    if (response.status === 200 || response.status === 204) {
-        res.sendStatus(204)
-    } else {
-        res.status(502).send(response.statusText)
+    try {
+        const response = await axios.post(URI, req.body, {
+            headers: { rights: req.headers.rights, accept: "application/json" },
+        })
+        if (response.status === 200 || response.status === 204) {
+            res.sendStatus(204)
+        } else {
+            res.status(502).send(response.statusText)
+        }
+    } catch (error) {
+        res.status(502).send("Error in USER module: " + error.message)
     }
 })
 
@@ -91,25 +103,33 @@ app.post("/user/archive/:id", checkToken, async (req, res) => {
 
 app.post("/movie/add", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/add"
-    const response = await axios.post(URI, req.body, {
-        headers: { rights: req.headers.rights, accept: "application/json" },
-    })
-    if (response.status === 200 || response.status === 201) {
-        res.status(response.status).send(response.data)
-    } else {
-        res.status(502).send(response.statusText)
+    try {
+        const response = await axios.post(URI, req.body, {
+            headers: { rights: req.headers.rights, accept: "application/json" },
+        })
+        if (response.status === 200 || response.status === 201) {
+            res.status(response.status).send(response.data)
+        } else {
+            res.status(502).send(response.statusText)
+        }
+    } catch (error) {
+        res.status(502).send("Error in MOVIE module: " + error.message)
     }
 })
 
 app.post("/movie/archive/:id", checkToken, async (req, res) => {
     const URI = process.env.CATALOG_COMPONENT_URI + "/archive/" + req.params.id
-    const response = await axios.post(URI, req.body, {
-        headers: { rights: req.headers.rights, accept: "application/json" },
-    })
-    if (response.status === 200 || response.status === 204) {
-        res.sendStatus(204)
-    } else {
-        res.status(502).send(response.statusText)
+    try {
+        const response = await axios.post(URI, req.body, {
+            headers: { rights: req.headers.rights, accept: "application/json" },
+        })
+        if (response.status === 200 || response.status === 204) {
+            res.sendStatus(204)
+        } else {
+            res.status(502).send(response.statusText)
+        }
+    } catch (error) {
+        res.status(502).send("Error in MOVIE module: " + error.message)
     }
 })
 

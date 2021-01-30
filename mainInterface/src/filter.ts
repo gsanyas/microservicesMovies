@@ -9,18 +9,22 @@ const checkToken = async (
     if ("token" in req.headers) {
         const auth = req.headers.token
         const cryptoURI = process.env.CRYPTO_COMPONENT_URI + "/decryptUser"
-        const response = await axios.put(cryptoURI, {token: auth})
-        if (response.status === 200) {
-            const user = response.data
-            try {
-                req.headers.id = user.id
-                req.headers.rights = user.rights
-                next()
-            } catch (error) {
-                res.status(401).send("Incorrect token value")
+        try {
+            const response = await axios.put(cryptoURI, { token: auth })
+            if (response.status === 200) {
+                const user = response.data
+                try {
+                    req.headers.id = user.id
+                    req.headers.rights = user.rights
+                    next()
+                } catch (error) {
+                    res.status(401).send("Incorrect token value")
+                }
+            } else {
+                res.status(502).send("Error while decrypting the token")
             }
-        } else {
-            res.status(502).send("Error while decrypting the token")
+        } catch (error) {
+            res.status(502).send("Error in cryptomodule: " + error.message)
         }
     } else {
         res.status(401).send(
