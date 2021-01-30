@@ -1,6 +1,5 @@
 # microservicesMovies
 
-
 Auteurs : Guillem Sanyas et Clément Ribes
 
 Ce programme est essentiellement une démonstration d'une architecture microservices pour un travail scolaire.
@@ -21,10 +20,14 @@ Ensuite, les lancer les 4 en même temps.
 
 Un programme se connectant à l'API et effectuant des opérations de base permet de tester son fonctionnement, et de comprendre comment faire des requêtes dessus. Il se trouve dans le répertoire test.
 
-
 ## Docker
 
 Pour déployer les microservices, nous avons créé des Dockerfiles à l'aide de la slide d'exemple. Ils sont dans le répertoire racine de chacun des microservices.
+
+Pour chaque composant qui est en typescript (movie, user-component,mainInterface), il faut d'abord compiler localemennt les fichiers :
+`npm install`
+`npm run build`
+
 Il faut alors ouvrir un terminal dans chacun des dossiers contenant les dockerfiles et taper:
 
 `docker build -t <nom_conteneur> .`
@@ -32,9 +35,6 @@ Il faut alors ouvrir un terminal dans chacun des dossiers contenant les dockerfi
 Puis taper
 
 `docker run <nom_conteneur>`
-
-
-
 
 Nous n'avons pas réussi à faire communiquer les microservices entre eux.
 
@@ -51,6 +51,7 @@ Ressources :
 Format des données utilisateurs : {id: number,address: string,password: string,rights: string}: User
 
 rights peut prendre les valeurs suivantes :
+
 - "1": autorisations client
 - "2": autorisations service admin
 - "3": autorisations catalogue admin
@@ -99,4 +100,3 @@ requêtes de la forme `$interfaceURI + /movie + $endpoint` (ex: `http://localhos
   - headers: {token: string}
   - authorization needed: rights=3
   - response: status: 204
-

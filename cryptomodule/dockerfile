@@ -4,10 +4,13 @@ FROM node:12.20.1
 WORKDIR /usr/src/app
 
 COPY package.json .
-COPY package-lock.json .
 
 RUN openssl rand 128 > sym_keyfile.key
 
-RUN npm install
+RUN npm install --production
 
-EXPOSE 3000
+COPY src/ .
+
+EXPOSE 8001
+
+CMD ["node","server.js"]

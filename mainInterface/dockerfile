@@ -4,20 +4,12 @@ FROM node:12.20.1
 
 WORKDIR /mainInterface
 
-
 COPY package.json .
-COPY package-lock.json .
 
-RUN npm install
+RUN npm install --production
 
-COPY . .
-
-RUN npm run build
-
-COPY tsconfig.json ./dist/
-COPY tslint.json ./dist/
-
-WORKDIR ./dist
+COPY dist/ .
 
 EXPOSE 3000 
-CMD node src/index.js
+
+CMD node index.js
